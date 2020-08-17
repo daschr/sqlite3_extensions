@@ -28,9 +28,6 @@ static int compare_single(unsigned int v, const char *e) {
     if(*e == '\0')
         return 0;
 
-    if(is_digit(e))
-        return v == atoi(e);
-
     if(e[0] == '*') {
         if(e[1] == '\0')
             return 1;
@@ -40,6 +37,22 @@ static int compare_single(unsigned int v, const char *e) {
             else
                 return !(v % atoi(e+2));
         }
+    }
+
+    int epos=0, cv;
+    while(e[epos]!='\0') {
+        int i=0;
+        for(; e[epos+i]>='0' && e[epos+i]<='9'; ++i);
+
+        if(i==0) return 0;
+
+        if(sscanf(e+epos,"%d*",&cv) != 1)
+            return 0;
+
+        if(cv==v)
+            return 1;
+
+        epos+=++i;
     }
 
     return 0;
