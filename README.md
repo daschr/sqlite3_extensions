@@ -3,7 +3,7 @@ collection of sqlite3 extensions
 
 ## cron.c
 
-* cron_match(date text, cron_entry text) allows you to compare dates against cron entries, wheter they match or not
+* `cron_match(date text, cron_entry text)` allows you to compare dates against cron entries, wheter they match or not
 * f.e.:
   * `select cron_match('2000-01-01 00:03:00', '*/3 * * * *');` returns 1
   * `select date from test1 where cron_match(date, '*/9 */10 * * *');` returns
