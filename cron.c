@@ -53,6 +53,7 @@ static int compare(const char *date, char *cronentry) {
 
     int pos=0;
     const char *s=strtok(cronentry," ");
+
     while(s != NULL && pos < 4) {
         if(!compare_single(d[4-pos++], s))
             return 0;
@@ -91,9 +92,13 @@ static void cron_match_func(
         return;
 
     date=(const char *) sqlite3_value_text(argv[0]);
-    cronentry=(char *) sqlite3_value_text(argv[1]);
+
+    sqlite3_value *cpy=sqlite3_value_dup(argv[1]);
+    cronentry=(char *) sqlite3_value_text(cpy);
 
     sqlite3_result_int(context, compare(date, cronentry));
+
+    sqlite3_value_free(cpy);
 }
 
 #ifdef _WIN32
