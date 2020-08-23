@@ -126,7 +126,11 @@ int sqlite3_cron_init(
     SQLITE_EXTENSION_INIT2(pApi);
     (void)pzErrMsg;  /* Unused parameter */
     rc = sqlite3_create_function(db, "cron_match", 2,
+#if SQLITE_VERSION_NUMBER > 3031000
                                  SQLITE_UTF8|SQLITE_INNOCUOUS|SQLITE_DETERMINISTIC,
+#else
+                                 SQLITE_UTF8|SQLITE_DETERMINISTIC,
+#endif
                                  0, cron_match_func, 0, 0);
     return rc;
 }
